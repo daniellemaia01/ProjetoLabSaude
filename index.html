@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabSaúde - Seus exames de sangue em um só lugar!</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header class="text-white py-3" style="background: linear-gradient(45deg, #800080, #4B0082);">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <img src="img/logo.jpg" alt="Logotipo do LabSaúde" class="mr-3 logo-header" style="height: 150px; border-radius: 20px;">
+                    <div>
+                        <h1 class="h3 mb-0">LabSaúde</h1>
+                        <p class="slogan mb-0">Seus exames de sangue em um só lugar!</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link text-white" href="#main">Início</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#services">Serviços</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#about">Sobre Nós</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#contact">Contato</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Imagem e Botões -->
+    <section id="main" class="py-5">
+        <div class="container d-flex align-items-center">
+            <div class="row w-100">
+                <div class="col-md-6">
+                    <img src="img/foto1.jpg" alt="Imagem do laboratório" class="img-fluid">
+                </div>
+                <div class="col-md-6 d-flex flex-column justify-content-center">
+                    <a href="retire-seus-exames.html" class="btn btn-primary btn-custom mb-2">Retire seus exames</a>
+                    <a href="cadastre-se.html" class="btn btn-secondary btn-custom">Cadastre-se</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Nós -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <h2 class="text-center">Sobre Nós</h2>
+            <div class="about-content mx-auto">
+                <p class="text-center">Somos o LabSaúde, um laboratório de análises clínicas dedicado a fornecer resultados precisos e rápidos. Nossa equipe é composta por profissionais altamente qualificados que utilizam tecnologia de ponta para garantir a qualidade dos seus exames. Nosso compromisso é com a sua saúde e bem-estar, oferecendo um atendimento humanizado e personalizado. Estamos localizados em uma área de fácil acesso e contamos com uma estrutura moderna e confortável para melhor atendê-lo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Listagem de Exames -->
+    <section id="services" class="py-5">
+        <div class="container">
+            <h2 class="text-center">Exames Realizados</h2>
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Hemograma Completo</h5>
+                            <p class="card-text">Avaliação detalhada dos componentes do sangue.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Glicemia</h5>
+                            <p class="card-text">Medição dos níveis de açúcar no sangue.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Colesterol</h5>
+                            <p class="card-text">Análise dos níveis de colesterol.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Triglicerídeos</h5>
+                            <p class="card-text">Medição dos níveis de triglicerídeos no sangue.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fale Conosco -->
+    <section id="contact" class="py-5">
+        <div class="container border p-4" style="background-color: #fefeff;">
+            <h2 class="text-center">Fale Conosco</h2>
+            <p class="text-center">Para marcação de exames, entre em contato conosco pelos seguintes meios:</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Telefone</h5>
+                    <p>(11) 1234-5678</p>
+                    <h5>Email</h5>
+                    <p>contato@labsaude.com</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Endereço</h5>
+                    <p>Rua Exemplo, 123, Bairro, Cidade, Estado</p>
+                    <h5>Horário de Funcionamento</h5>
+                    <p>Segunda a Sexta: 7:00 - 18:00</p>
+                    <p>Sábado: 7:00 - 12:00</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="text-white text-center py-3" style="background: linear-gradient(45deg, #800080, #4B0082);">
+        <div class="container">
+            <p>&copy; 2024 LabSaúde. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

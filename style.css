@@ -1,0 +1,69 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #adc0d3;
+    line-height: 1.6;
+}
+
+h1, h2, h5 {
+    font-weight: bold;
+}
+
+section {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+footer p {
+    margin: 0;
+}
+
+header .slogan {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.logo-header {
+
+    height: auto;
+    border-radius: 50%;
+}
+
+nav .nav-link {
+    font-size: 1.1rem;
+}
+
+.btn-custom {
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+#about, #contact {
+    background-color: #adc0d3;
+    font-size: 20px;
+}
+
+#contact .container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    
+}
+
+.about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
