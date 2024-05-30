@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Exames</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Exames</h1>
+        <form>
+            <label for="identifier">Identificador:</label>
+            <input type="text" id="identifier" name="identifier" placeholder="Digite o número de identificação">
+            <label for="user">Usuário:</label>
+            <select id="user" name="user">
+                <option value="name">Daniel</option>
+                <option value="name">Jonathan</option>
+                <option value="name">Samuel</option>
+            </select>
+            <label for="exam_type">Tipo de Exame:</label>
+            <select id="exam_type" name="exam_type">
+                <option value="name">Glicemia</option>
+                <option value="name">Triglicerídeos</option>
+                <option value="name">Colesterol</option>
+                <option value="name">Pressão</option>
+            </select>
+            <label for="result">Resultado:</label>
+            <input type="text" id="result" name="result" placeholder="Digite o resultado do exame">
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
+</body>
+</html>
