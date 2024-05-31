@@ -25,7 +25,7 @@ const updateExamType = async (req, res) => {
 
         const { nomeExame, valorReferencia } = req.body;
         if (!nomeExame && !valorReferencia) {
-            return res.status(400).json({ message: 'Submit at least one field for update' });
+            return res.status(400).json({ message: 'Envie pelo menos um campo para atualização.' });
         }
 
         const examType = await updateExamTypeService(id, { nomeExame, valorReferencia });
@@ -39,9 +39,9 @@ const deleteExamType = async (req, res) => {
     try {
         const { id } = req.params;
         await deleteExamTypeService(id);
-        res.status(200).json({ message: 'Tipo de exame deletado com sucesso.' });
+        res.status(200).json({ message: 'Tipo de exame removido com sucesso.' });
     } catch (error) {
-        res.status(500).json({ message: 'Erro ao deletar tipo de exame.' });
+        res.status(500).json({ message: 'Erro ao remover tipo de exame.' });
     }
 }
 

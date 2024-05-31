@@ -7,18 +7,18 @@ const createExamController = async (req, res) => {
     try {
 
         if (!usuarioId || !tipoExameId || !dataColeta || !resultado) {
-            return res.status(400).json({ message: 'Missing required fields' });
+            return res.status(400).json({ message: 'Preencha todos os campos do resultado do exame.' });
         }
 
         const user = await userService.getUserByIdService(usuarioId);
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Usuário não existe.' });
         }
         const examType = await getExamTypeByIdService(tipoExameId);
 
         if (!examType) {
-            return res.status(404).json({ message: 'Exam Type not found' });
+            return res.status(404).json({ message: 'Tipo de exame não existe.' });
         }
 
         const dataColetaISO = new Date(dataColeta.split('/').reverse().join('-'));
@@ -27,7 +27,7 @@ const createExamController = async (req, res) => {
 
         const examPopulated = await examService.getExamByIdService(exam._id);
 
-        res.status(201).json({message: 'Exam created', exam: examPopulated});
+        res.status(201).json({message: 'Resultado de exame criado!', exam: examPopulated});
     } catch (error) {
         res.status(500).json({ message: error.message });
         console.log(error);
@@ -49,7 +49,7 @@ const getExamByIdController = async (req, res) => {
         if (exam) {
             res.status(200).json(exam);
         } else {
-            res.status(404).json({ message: 'Exam not found' });
+            res.status(404).json({ message: 'Resultado de exame não encontrado.' });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -76,7 +76,7 @@ const updateExamController = async (req, res) => {
         if (updatedExam) {
             res.status(200).json(updatedExam);
         } else {
-            res.status(404).json({ message: 'Exam not found' });
+            res.status(404).json({ message: 'Resultado de exame não encontrado.' });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -89,9 +89,9 @@ const deleteExamController = async (req, res) => {
 
         const deletedExam = await examService.deleteExamService(id);
         if (deletedExam) {
-            res.status(200).json({ message: 'Exam deleted successfully' });
+            res.status(200).json({ message: 'Resultado de exame removido com sucesso.' });
         } else {
-            res.status(404).json({ message: 'Exam not found' });
+            res.status(404).json({ message: 'Resultado de exame não encontrado.' });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });

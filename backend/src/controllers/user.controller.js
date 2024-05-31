@@ -5,25 +5,25 @@ const createUser = async (req, res) => {
     const { nome, email, senha, dataNascimento, cpf, admin} = req.body;
 
     if (!nome || !email || !senha || !dataNascimento || !cpf || admin === undefined) {
-        return res.status(400).json({ message: 'Missing required fields' });
+        return res.status(400).json({ message: 'Preencha todos os campos do usuário.' });
     }
 
     try {
         const foundUser = await userRepositories.findByEmailUserRepository(email);
         
         if (foundUser) {
-            return res.status(409).json({ message: 'User already exists' });
+            return res.status(409).json({ message: 'Já existe usuário com o e-mail informado.' });
         }
 
         const user = await userService.createUserService(req.body);
 
         if (!user) {
-            return res.status(400).json({ message: 'User not created' });
+            return res.status(400).json({ message: 'Erro interno no acesso ao banco de dados. Tente novamente mais tarde.' });
         }
 
         const { senha, ...userWithoutPassword } = user.toObject();
 
-        res.status(201).json({ message: 'User created successfully', user: userWithoutPassword });
+        res.status(201).json({ message: 'Usuário criado com sucesso!', user: userWithoutPassword });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -51,7 +51,7 @@ const getAllUsers = async (req, res) => {
         const previousUrl = previous < 0 ? null : `${currentUrl}?offset=${previous}&limit=${limit}`
 
         if (users.length === 0 || !users){
-            return res.status(404).json({ message: 'No users found' });
+            return res.status(404).json({ message: 'Nenhum usuário encontrado.' });
         }
 
         res.status(200).json({ users, totalUsers, limit, offset, nextUrl, previousUrl });
@@ -73,7 +73,7 @@ const updateUser = async (req, res) => {
     const { nome, email, senha, dataNascimento, cpf, admin } = req.body;
 
     if (!nome && !email && !senha && !dataNascimento && !cpf && admin === undefined) {
-        return res.status(400).json({ message: 'Submit at least one field for update' });
+        return res.status(400).json({ message: 'Envie pelo menos um campo para atualização.' });
     }
     
     try {
@@ -81,11 +81,11 @@ const updateUser = async (req, res) => {
         const foundUser = await userRepositories.findByEmailUserRepository(email);
         
         if (foundUser) {
-            return res.status(409).json({ message: 'User already exists' });
+            return res.status(409).json({ message: 'Já existe usuário com o e-mail informado.' });
         }
         
         const updatedUser = await userService.updateUserService(req.userId, nome, email, senha, dataNascimento, cpf, admin);
-        res.status(200).json({ message: 'User updated successfully', user: updatedUser});
+        res.status(200).json({ message: 'Usuário atualizado com sucesso', user: updatedUser});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -95,7 +95,7 @@ const updateUserById = async (req, res) => {
     const { nome, email, senha, dataNascimento, cpf, admin } = req.body;
 
     if (!nome && !email && !senha && !dataNascimento && !cpf && admin === undefined) {
-        return res.status(400).json({ message: 'Submit at least one field for update' });
+        return res.status(400).json({ message: 'Envie pelo menos um campo para atualização.' });
     }
     
     try {
@@ -103,11 +103,11 @@ const updateUserById = async (req, res) => {
         const foundUser = await userRepositories.findByEmailUserRepository(email);
         
         if (foundUser) {
-            return res.status(409).json({ message: 'User already exists' });
+            return res.status(409).json({ message: 'Já existe usuário com o e-mail informado.' });
         }
         
         const updatedUser = await userService.updateUserService(req.params.id, nome, email, senha, dataNascimento, cpf, admin);
-        res.status(200).json({ message: 'User updated successfully', user: updatedUser});
+        res.status(200).json({ message: 'Usuário atualizado com sucesso!', user: updatedUser});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -117,7 +117,7 @@ const deleteUser = async (req, res) => {
     const id = req.params.id;
     try {
         await userService.deleteUserService(id);
-        res.status(200).json({ message: 'User deleted successfully' });
+        res.status(200).json({ message: 'Usuário removido com sucesso.' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
