@@ -1,115 +1,103 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuário</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Estilos CSS adicionais */
-        .readonly-input {
-            background-color: #f8f9fa;
-            pointer-events: none;
-        }
-    </style>
+    <title>LabSaúde - Seus exames de sangue em um só lugar!!!</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header" style="background-color: rgb(100, 149, 237);">Cadastro de Usuário</div>
-                <div class="card-body">
-                    <form id="userForm">
-                        <div class="form-group">
-                            <label for="identifier"><strong>Identificador:</strong></label>
-                            <input type="text" class="form-control readonly-input" id="identifier" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Nome:</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="birthdate">Data de Nascimento:</label>
-                            <input type="date" class="form-control" id="birthdate" name="birthdate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="cpf">CPF:</label>
-                            <input type="text" class="form-control" id="cpf" name="cpf" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">E-mail:</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Senha:</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="admin" name="admin">
-                            <label class="form-check-label" for="admin">Administrador</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                    </form>
+    <!-- Cabeçalho -->
+    <header class="text-white py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <a href="index.html">
+                        <img src="img/logo.jpg" alt="Logotipo do LabSaúde" class="mr-3 logo-header">
+                    </a>
+                    <div>
+                        <p class="slogan mb-0">Seus exames de sangue em um só lugar!</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link text-white" href="#main" id="login-logout"></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Cadastro de Usuário</div>
+                    <div class="card-body">
+                        <form id="userForm">
+                            <div class="form-group">
+                                <label for="identifier">Identificador:</label>
+                                <input type="text" class="form-control readonly-input" id="identifier" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail:</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nome">Nome:</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dataNascimento">Data de Nascimento:</label>
+                                <input type="date" class="form-control" id="dataNascimento" name="dataNascimento"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cpf">CPF:</label>
+                                <input type="text" class="form-control" id="cpf" name="cpf" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="senha">Senha:</label>
+                                <input type="password" class="form-control" id="senha" name="senha" required>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="admin" name="admin">
+                                <label class="form-check-label" for="admin">Administrador</label>
+                            </div>
+
+                            <!-- Campo para exibir mensagens de erro -->
+                            <div id="erro-msg" class="alert alert-danger mt-3"></div>
+
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Bootstrap JS (opcional, se você precisar de componentes JS do Bootstrap) -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Rodapé -->
+    <footer class="text-white text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 LabSaúde. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
-<!-- Axios CDN (para fazer requisições HTTP) -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="frontend.js"></script>
 
-<script>
-    // Função para gerar um identificador único (por exemplo, um UUID)
-    function generateIdentifier() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
-
-    // Preencher o campo de identificador com um valor gerado
-    document.getElementById('identifier').value = generateIdentifier();
-
-    // Função para lidar com o envio do formulário de cadastro de usuário
-    document.getElementById('userForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita o envio padrão do formulário
-        
-        // Obter os valores dos campos de cadastro de usuário
-        var name = document.getElementById('name').value;
-        var birthdate = document.getElementById('birthdate').value;
-        var cpf = document.getElementById('cpf').value;
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-        var admin = document.getElementById('admin').checked;
-
-        // Aqui você pode adicionar código para enviar os dados de cadastro de usuário para o backend usando Axios
-        // Exemplo:
-        axios.post('/signup', {
-            identifier: generateIdentifier(),
-            name: name,
-            birthdate: birthdate,
-            cpf: cpf,
-            email: email,
-            password: password,
-            admin: admin
-        })
-        .then(function (response) {
-            console.log(response.data);
-            // Aqui você pode adicionar código para redirecionar o usuário após o cadastro bem-sucedido
-        })
-        .catch(function (error) {
-            console.error('Erro ao cadastrar usuário:', error);
-            // Aqui você pode adicionar código para lidar com erros de cadastro, como exibir uma mensagem de erro para o usuário
-        });
-    });
-</script>
+    <script>
+        manterUsuario();
+    </script>
 
 </body>
+
 </html>

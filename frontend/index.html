@@ -9,22 +9,23 @@
 </head>
 <body>
     <!-- Cabeçalho -->
-    <header class="text-white py-3" style="background: linear-gradient(45deg, #800080, #4B0082);">
+    <header class="text-white py-3">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                    <img src="img/logo.jpg" alt="Logotipo do LabSaúde" class="mr-3 logo-header" style="height: 150px; border-radius: 20px;">
+                    <a href="index.html">
+                        <img src="img/logo.jpg" alt="Logotipo do LabSaúde" class="mr-3 logo-header">
+                    </a>
                     <div>
-                        <h1 class="h3 mb-0">LabSaúde</h1>
                         <p class="slogan mb-0">Seus exames de sangue em um só lugar!</p>
                     </div>
                 </div>
                 <nav>
                     <ul class="nav">
-                        <li class="nav-item"><a class="nav-link text-white" href="#main">Início</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#services">Serviços</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#services">Exames</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#about">Sobre Nós</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="#contact">Contato</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#main" id="login-logout"></a></li>
                     </ul>
                 </nav>
             </div>
@@ -36,11 +37,11 @@
         <div class="container d-flex align-items-center">
             <div class="row w-100">
                 <div class="col-md-6">
-                    <img src="img/foto1.jpg" alt="Imagem do laboratório" class="img-fluid">
+                    <img src="img/foto1.jpg" alt="Imagem do laboratório" class="img-fluid" >
                 </div>
                 <div class="col-md-6 d-flex flex-column justify-content-center">
-                    <a href="retire-seus-exames.html" class="btn btn-primary btn-custom mb-2">Retire seus exames</a>
-                    <a href="cadastre-se.html" class="btn btn-secondary btn-custom">Cadastre-se</a>
+                    <a href="login.html" class="btn btn-primary mb-2">Retire seus Exames</a>
+                    <a href="edita_usuario.html" class="btn btn-secondary ">Cadastre-se</a>
                 </div>
             </div>
         </div>
@@ -99,17 +100,17 @@
 
     <!-- Fale Conosco -->
     <section id="contact" class="py-5">
-        <div class="container border p-4" style="background-color: #fefeff;">
+        <div class="container border p-4">
             <h2 class="text-center">Fale Conosco</h2>
             <p class="text-center">Para marcação de exames, entre em contato conosco pelos seguintes meios:</p>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 text-center">
                     <h5>Telefone</h5>
                     <p>(11) 1234-5678</p>
                     <h5>Email</h5>
                     <p>contato@labsaude.com</p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 text-center">
                     <h5>Endereço</h5>
                     <p>Rua Exemplo, 123, Bairro, Cidade, Estado</p>
                     <h5>Horário de Funcionamento</h5>
@@ -121,15 +122,17 @@
     </section>
 
     <!-- Rodapé -->
-    <footer class="text-white text-center py-3" style="background: linear-gradient(45deg, #800080, #4B0082);">
+    <footer class="text-white text-center py-3">
         <div class="container">
             <p>&copy; 2024 LabSaúde. Todos os direitos reservados.</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>    
+    <script src="frontend.js"></script>
+
 </body>
 </html>
