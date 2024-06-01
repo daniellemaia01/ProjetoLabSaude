@@ -6,7 +6,7 @@ let axiosInstance = getInstanciaAxios();
 
 // Caso exista, escondendo elemento com possiveis mensagens de erro
 const erroMsgElement = document.getElementById('erro-msg');
-if (erroMsgElement != null ) erroMsgElement.style.display = 'none';
+if (erroMsgElement) erroMsgElement.style.display = 'none';
 
 // Logica para exibir Link login / logout no cabecalho
 logicaLinkLoginLogoutHeader();

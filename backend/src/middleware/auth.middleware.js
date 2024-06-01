@@ -9,41 +9,41 @@ const authMiddleware = async (req, res, next) => {
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
-            return res.status(401).json({ message: 'Token not provided' });
+            return res.status(401).json({ message: 'Token não informado' });
         }
 
         const parts = authHeader.split(' ');
 
         if (parts.length !== 2) {
-            return res.status(401).json({ message: 'Token error' });
+            return res.status(401).json({ message: 'Erro no Token' });
         }
 
         const [scheme, token] = parts;
 
         if (!/^Bearer$/i.test(scheme)) {
-            return res.status(401).json({ message: 'Token malformatted' });
+            return res.status(401).json({ message: 'Token mal formado' });
         }
 
         jwt.verify(token, process.env.SECRET_JWT, async (err, decoded) => {
             if (err) {
-                return res.status(401).json({ message: 'Token invalid' });
+                return res.status(401).json({ message: 'Token inválido' });
             }
             try {
                 const user = await userService.getUserByIdService(decoded.id);
 
                 if (!user) {
-                    return res.status(401).json({ message: 'User not found' });
+                    return res.status(401).json({ message: 'Usuário não encontrado' });
                 }
 
                 req.userId = user._id;
                 req.user = user;
                 return next();
             } catch (error) {
-                return res.status(500).json({ message: 'Error fetching user' });
+                return res.status(500).json({ message: 'Erro ao obter usuário' });
             }
         });
     } catch (error) {
-        return res.status(500).json({ message: 'Error processing token' });
+        return res.status(500).json({ message: 'Erro ao processar o token' });
     }
 }
 

@@ -8,7 +8,6 @@ const userRoute = require('./routes/user.route.js');
 const authRoute = require('./routes/auth.route.js');
 const exam = require('./routes/exam.route.js');
 
-
 dotenv.config();
 connectDatabase();
 
@@ -21,4 +20,4 @@ app.use('/login', authRoute);
 app.use('/examType', examTypeRouter);
 app.use('/exam', exam);
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor escutando na porta ${PORT}`));
