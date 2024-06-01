@@ -102,7 +102,7 @@ const updateUserById = async (req, res) => {
 
         const foundUser = await userRepositories.findByEmailUserRepository(email);
         
-        if (foundUser) {
+        if (foundUser && foundUser._id != req.params.id) {
             return res.status(409).json({ message: 'Já existe usuário com o e-mail informado.' });
         }
         

@@ -42,12 +42,16 @@ function editaUsuario () {
     // Caso usuario esteja editando um usuario ele precisa estar logado
     if (idUserEdicao && getUserId()) {
 
-        // Usuario que nao é admin só vai editar o próprio perfil
+        // Usuario que nao é admin só pode editar o próprio perfil
         if (idUserEdicao != getUserId() && !getUserAdmin()) {
-            idUserEdicao = getUserId();
+            if (erroMsgElement != null ) {
+                erroMsgElement.textContent = 'Você só pode editar seu próprio usuário';
+                erroMsgElement.style.display = 'block';
+            }
+            return;
         }
 
-        // Recuperar os dados do usuario
+        // Recuperar os dados do usuario e popular no formulario
         axiosInstance.get('/users/'+idUserEdicao)
         .then(function (response) {
             // Na obtencao de usuarios com sucesso
@@ -68,8 +72,20 @@ function editaUsuario () {
                 erroMsgElement.textContent = 'Erro ao recuperar usuário: ' + error.response.data.message;
                 erroMsgElement.style.display = 'block';
             }
+            return;
         });
     }
+
+    // Se esta criando um usuario, escondendo div do campo id
+    if (!idUserEdicao) {
+        document.getElementById('div-id').style = "display: none";
+    }
+
+    // Campo que indica que usuario é administrador só fica visivel se usuario
+    // logado tambem for administrador
+    if (!getUserAdmin()) {
+        document.getElementById('div-admin').style = "display: none";
+    }    
 
     // Para quando clicar no botao de enviar formulario
     document.getElementById('userForm').addEventListener('submit', function(event) {
@@ -84,28 +100,71 @@ function editaUsuario () {
         let senha = document.getElementById('senha').value;
         let admin = document.getElementById('admin').checked;
 
-        // Chamando endpoint do backend para criar usuario
-        axiosInstance.post('/users', {
-            nome: nome,
-            dataNascimento: dataNascimento,
-            cpf: cpf,
-            email: email,
-            senha: senha,
-            admin: admin
-        })
-        .then(function (response) {
-            // Na criacao com sucesso, redirecionar para a tela inicial do usuario
-            console.log(response.data);
-            window.location.href = 'tela_usuario.html';
-        })
-        .catch(function (error) {
-            // No caso de erro, apresentar na tela
-            console.error('Erro ao cadastrar usuário:', error);
-            if (erroMsgElement != null ) {
-                erroMsgElement.textContent = 'Erro ao cadastrar usuário: ' + error.response.data.message;
-                erroMsgElement.style.display = 'block';
+        if (idUserEdicao == null) {
+            // Chamando endpoint do backend para criar usuario
+            axiosInstance.post('/users', {
+                nome: nome,
+                dataNascimento: dataNascimento,
+                cpf: cpf,
+                email: email,
+                senha: senha,
+                admin: admin
+            })
+            .then(function (response) {
+                // Na criacao com sucesso, redirecionar para a tela inicial do usuario
+                console.log(response.data);
+                window.location.href = 'tela_usuario.html';
+            })
+            .catch(function (error) {
+                // No caso de erro, apresentar na tela
+                console.error('Erro ao cadastrar usuário:', error);
+                if (erroMsgElement != null ) {
+                    erroMsgElement.textContent = 'Erro ao cadastrar usuário: ' + error.response.data.message;
+                    erroMsgElement.style.display = 'block';
+                }
+                return;
+            });
+        } else {
+            // Chamando endpoint do backend para editar usuario
+            let usuarioPersistir;
+
+            // Se a senha esta sendo atualizada, coloco ela na lista de propriedades a persistir
+            if (senha != null && senha != '') {
+                usuarioPersistir = {
+                    nome: nome,
+                    dataNascimento: dataNascimento,
+                    cpf: cpf,
+                    email: email,
+                    senha: senha,
+                    admin: admin
+                };
+            } else {
+                // Caso contrario, suprimo a senha
+                usuarioPersistir = {
+                    nome: nome,
+                    dataNascimento: dataNascimento,
+                    cpf: cpf,
+                    email: email,
+                    admin: admin
+                };
             }
-        });
+
+            axiosInstance.put('/users/'+idUserEdicao, usuarioPersistir)
+            .then(function (response) {
+                // Na edicao com sucesso, redirecionar para a tela inicial do usuario
+                console.log(response.data);
+                window.location.href = 'tela_usuario.html';
+            })
+            .catch(function (error) {
+                // No caso de erro, apresentar na tela
+                console.error('Erro ao atualizar usuário:', error);
+                if (erroMsgElement != null ) {
+                    erroMsgElement.textContent = 'Erro ao atualizar usuário: ' + error.response.data.message;
+                    erroMsgElement.style.display = 'block';
+                }
+                return;
+            });
+        }
     });
 
 
@@ -154,6 +213,7 @@ function login () {
                 erroMsgElement.textContent = 'Erro ao realizar login: ' + error.response.data.message;
                 erroMsgElement.style.display = 'block';
             }
+            return;
         });
     });
 }
@@ -187,6 +247,7 @@ function listarUsuarios(){
             erroMsgElement.textContent = 'Erro ao listar usuários: ' + error.response.data.message;
             erroMsgElement.style.display = 'block';
         }
+        return;
     });
 }
 
@@ -213,7 +274,7 @@ function getUserId() {
 
 // Recupera se usuario logado é admin ou não do Local storage
 function getUserAdmin() {
-    return localStorage.getItem('userAdmin');
+    return JSON.parse(localStorage.getItem('userAdmin'));
 }
 
 // Logica para exibir Link login / logout no cabecalho

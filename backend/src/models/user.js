@@ -16,6 +16,15 @@ UserSchema.pre('save', async function(next) {
     return next();
 });
 
+UserSchema.pre('findOneAndUpdate', async function(next) {
+    const update = this.getUpdate();
+    if (update.senha) {
+        // Se a senha foi modificada, criptografa novamente
+        update.senha = await bcrypt.hash(update.senha, 10);
+    }
+    return next();
+});
+
 const user = model('user', UserSchema);
 
 module.exports = user;
