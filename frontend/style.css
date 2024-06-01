@@ -71,6 +71,7 @@ nav .nav-link {
     background:#800080;
     border-color: #800080;
     border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 .btn-primary:hover {

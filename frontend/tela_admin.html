@@ -1,78 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página do Administrador</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header .btn-group {
-            display: flex;
-            gap: 10px;
-        }
-        .header .btn-group .btn {
-            white-space: nowrap;
-        }
-        .header h1 {
-            margin: 0;
-        }
-        .content {
-            padding: 20px;
-        }
-        .actions {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .actions .btn {
-            flex: 1 1 calc(50% - 10px);
-        }
-    </style>
+    <title>LabSaúde - Seus exames de sangue em um só lugar!!!</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-<div class="header">
-    <h1>Olá, Administrador!</h1>
-    <div class="btn-group">
-        <button class="btn btn-light btn-lg">Editar Meu Perfil</button>
-        <button class="btn btn-light btn-sm">Sair</button>
+    <!-- Cabeçalho -->
+    <header class="text-white py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <a href="index.html">
+                        <img src="img/logo.jpg" alt="Logotipo do LabSaúde" class="mr-3 logo-header">
+                    </a>
+                    <div>
+                        <p class="slogan mb-0">Seus exames de sangue em um só lugar!</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link text-white" href="#main" id="login-logout"></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Tela do Administrador</div>
+                    <div class="card-body">
+                        <p>Escolha uma das ações abaixo:</p>
+                        <a href="lista_usuarios.html" class="btn btn-primary mb-2">Listar usuarios</a><br>
+                        <a href="lista_resultados_exames.html" class="btn btn-primary mb-2">Listar resultados de exames</a><br>
+                        <a href="lista_tipos_exames.html" class="btn btn-primary mb-2">Listar tipos de exames</a><br>
+                        <a href="edita_usuario.html" class="btn btn-primary mb-2" >Cadastrar usuário</a><br>
+                        <a href="edita_resultado_exame.html" class="btn btn-primary mb-2" >Cadastrar resultado de exame</a><br>
+                        <a id="link-editar-perfil" href="" class="btn btn-primary mb-2">Editar meu perfil</a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="content">
-    <p><strong>Identificador: </strong><span id="identifier"></span></p>
-    <p>Escolha uma das ações abaixo:</p>
-    <div class="actions">
-        <button class="btn btn-primary">Listar Usuários</button>
-        <button class="btn btn-primary">Listar Resultados de Exames</button>
-        <button class="btn btn-primary">Cadastrar Usuário</button>
-        <button class="btn btn-primary">Cadastrar Resultados de Exames</button>
-    </div>
-</div>
+    <br><br><br><br><br>
 
-<!-- Bootstrap JS (opcional, se você precisar de componentes JS do Bootstrap) -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Rodapé -->
+    <footer class="text-white text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 LabSaúde. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
-<!-- Axios CDN (para fazer requisições HTTP) -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="frontend.js"></script>
 
-<script>
-    // Função para obter o identificador do administrador
-    function getAdminIdentifier() {
-        // Substitua pelo código real para obter o identificador do administrador
-        return 'admin-123456';
-    }
+    <script>
+        montarEditarPerfilUsuario();
+    </script>
 
-    // Exibir o identificador do administrador
-    document.getElementById('identifier').innerText = getAdminIdentifier();
-</script>
+</body>
+
+</html>

@@ -41,8 +41,8 @@
                     <div class="card-body">
                         <form id="userForm">
                             <div class="form-group">
-                                <label for="identifier">Identificador:</label>
-                                <input type="text" class="form-control readonly-input" id="identifier" readonly>
+                                <label for="_id">Identificador:</label>
+                                <input type="text" class="form-control readonly-input" id="_id" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="email">E-mail:</label>
@@ -71,7 +71,7 @@
                             </div>
 
                             <!-- Campo para exibir mensagens de erro -->
-                            <div id="erro-msg" class="alert alert-danger mt-3"></div>
+                            <div id="erro-msg" class="alert alert-danger mt-3" style="display: none;"></div>
 
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </form>
@@ -95,7 +95,7 @@
     <script src="frontend.js"></script>
 
     <script>
-        manterUsuario();
+        editaUsuario();
     </script>
 
 </body>

@@ -6,7 +6,6 @@ let axiosInstance = getInstanciaAxios();
 
 // Caso exista, escondendo elemento com possiveis mensagens de erro
 const erroMsgElement = document.getElementById('erro-msg');
-if (erroMsgElement) erroMsgElement.style.display = 'none';
 
 // Logica para exibir Link login / logout no cabecalho
 logicaLinkLoginLogoutHeader();
@@ -14,11 +13,11 @@ logicaLinkLoginLogoutHeader();
 // Criar instancia do Axios
 function getInstanciaAxios() {
     // Se tem token JWT passa ele no header
-    if (localStorage.getItem('jwtToken')) {
+    if (getJwtToken()) {
         return axios.create({
             baseURL: baseURL,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+                'Authorization': `Bearer ${getJwtToken()}`
             }
         })
     } else {
@@ -28,20 +27,62 @@ function getInstanciaAxios() {
     }
 }
 
-// Para criar ou editar um usuario
-function manterUsuario () {
+// Para obter um parametro passado via GET na URL
+function getURLParamValue(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
 
+// Para criar ou editar um usuario
+function editaUsuario () {
+
+    // Verificando se foi passado id de usuario para edicao
+    let idUserEdicao = getURLParamValue("id");
+
+    // Caso usuario esteja editando um usuario ele precisa estar logado
+    if (idUserEdicao && getUserId()) {
+
+        // Usuario que nao é admin só vai editar o próprio perfil
+        if (idUserEdicao != getUserId() && !getUserAdmin()) {
+            idUserEdicao = getUserId();
+        }
+
+        // Recuperar os dados do usuario
+        axiosInstance.get('/users/'+idUserEdicao)
+        .then(function (response) {
+            // Na obtencao de usuarios com sucesso
+            let usuarioEdicao = response.data;
+            console.log(usuarioEdicao);
+
+            document.getElementById('_id').value = usuarioEdicao._id;
+            document.getElementById('nome').value = usuarioEdicao.nome;
+            document.getElementById('dataNascimento').value = formatarDataParaFrontend(usuarioEdicao.dataNascimento);
+            document.getElementById('cpf').value = usuarioEdicao.cpf;
+            document.getElementById('email').value = usuarioEdicao.email;
+            document.getElementById('admin').checked = usuarioEdicao.admin;
+        })
+        .catch(function (error) {
+            // No caso de erro, apresentar na tela
+            console.error('Erro ao recuperar usuário:', error);
+            if (erroMsgElement != null ) {
+                erroMsgElement.textContent = 'Erro ao recuperar usuário: ' + error.response.data.message;
+                erroMsgElement.style.display = 'block';
+            }
+        });
+    }
+
+    // Para quando clicar no botao de enviar formulario
     document.getElementById('userForm').addEventListener('submit', function(event) {
         // Evita o envio padrão do formulário
         event.preventDefault(); 
         
         // Obter os valores dos campos de usuário
-        var nome = document.getElementById('nome').value;
-        var dataNascimento = document.getElementById('dataNascimento').value;
-        var cpf = document.getElementById('cpf').value;
-        var email = document.getElementById('email').value;
-        var senha = document.getElementById('senha').value;
-        var admin = document.getElementById('admin').checked;
+        let nome = document.getElementById('nome').value;
+        let dataNascimento = document.getElementById('dataNascimento').value;
+        let cpf = document.getElementById('cpf').value;
+        let email = document.getElementById('email').value;
+        let senha = document.getElementById('senha').value;
+        let admin = document.getElementById('admin').checked;
 
         // Chamando endpoint do backend para criar usuario
         axiosInstance.post('/users', {
@@ -66,6 +107,8 @@ function manterUsuario () {
             }
         });
     });
+
+
 }
 
 // Para fazer login de usuario
@@ -78,8 +121,8 @@ function login () {
         event.preventDefault(); 
 
         // Obter os valores dos campos de login
-        var email = document.getElementById('email').value;
-        var senha = document.getElementById('senha').value;
+        let email = document.getElementById('email').value;
+        let senha = document.getElementById('senha').value;
         
         // Chamando endpoint do backend para criar usuario
         axiosInstance.post('/login', {
@@ -98,7 +141,7 @@ function login () {
             axiosInstance = getInstanciaAxios();
 
             // Na criacao com sucesso, redirecionar para a tela inicial do usuario
-            if (localStorage.getItem('userAdmin')) {
+            if (getUserAdmin()) {
                 window.location.href = 'tela_admin.html';
             } else {
                 window.location.href = 'tela_usuario.html';
@@ -118,7 +161,7 @@ function login () {
 // Para listar todos usuarios
 function listarUsuarios(){
     // Chamando endpoint do backend para listar usuarios
-       axiosInstance.get('/users?limit=1000&offset=0')
+    axiosInstance.get('/users?limit=1000&offset=0')
     .then(function (response) {
         // Na obtencao de usuarios com sucesso
         const usuarios = response.data.users;
@@ -158,10 +201,25 @@ function logout(){
     window.location.href = 'index.html';
 }
 
+// Recupera jwtToken do Local storage
+function getJwtToken() {
+    return localStorage.getItem('jwtToken');
+}
+
+// Recupera id do usuario logado do Local storage
+function getUserId() {
+    return localStorage.getItem('userId');
+}
+
+// Recupera se usuario logado é admin ou não do Local storage
+function getUserAdmin() {
+    return localStorage.getItem('userAdmin');
+}
+
 // Logica para exibir Link login / logout no cabecalho
 function logicaLinkLoginLogoutHeader() {
     const loginLogoutHeader = document.getElementById('login-logout');
-    if (localStorage.getItem('jwtToken')) {
+    if (getJwtToken()) {
         loginLogoutHeader.href = "javascript:void(0)";
         loginLogoutHeader.onclick = logout;
         loginLogoutHeader.innerText = "Logout"
@@ -169,4 +227,17 @@ function logicaLinkLoginLogoutHeader() {
         loginLogoutHeader.href = "login.html";
         loginLogoutHeader.innerText = "Login"
     }
+}
+
+// Logica da tela de usuario
+function montarEditarPerfilUsuario() {
+    // Ir para página de edicao de perfil usuario
+    document.getElementById('link-editar-perfil').href = 'edita_usuario.html?id=' + getUserId();
+}
+
+// Recebe uma data no formato mantido pelo backed e converte para formato do frontend
+function formatarDataParaFrontend(dataBackendString) {
+    const dataBackend = new Date(dataBackendString);
+    const dataFormatadaFrontend = dataBackend.toISOString().split('T')[0];   
+    return  dataFormatadaFrontend;
 }
