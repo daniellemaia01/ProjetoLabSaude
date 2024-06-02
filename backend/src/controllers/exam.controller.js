@@ -78,8 +78,8 @@ const updateExamController = async (req, res) => {
     try {
         const updateData = req.body;
         if (updateData.dataColeta) {
-            const [day, month, year] = updateData.dataColeta.split('/');
-            updateData.dataColeta = new Date(year, month - 1, day);
+            const dataColetaISO = new Date(updateData.dataColeta.split('/').reverse().join('-'));
+            updateData.dataColeta = dataColetaISO;
         }
         const updatedExam = await examService.updateExamService(req.params.id, updateData);
         if (updatedExam) {

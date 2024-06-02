@@ -120,7 +120,7 @@ const deleteUser = async (req, res) => {
         // Verificando se usuario tem resultados de exames
         const exams = await examService.getExamsByUserIdService(req.params.id);
 
-        // So remove se nao tiver resultados de exames
+        // So remove se usuarios nao tiver resultados de exames
         if (exams.length == 0) {
             await userService.deleteUserService(id);
             res.status(200).json({ message: 'Usuário removido com sucesso.' });

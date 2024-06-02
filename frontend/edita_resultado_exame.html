@@ -1,73 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Exames</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        select, input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        button {
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-    </style>
+    <title>LabSaúde - Seus exames de sangue em um só lugar!!!</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
-    <div class="container">
-        <h1>Registro de Exames</h1>
-        <form>
-            <label for="identifier">Identificador:</label>
-            <input type="text" id="identifier" name="identifier" placeholder="Digite o número de identificação">
-            <label for="user">Usuário:</label>
-            <select id="user" name="user">
-                <option value="name">Daniel</option>
-                <option value="name">Jonathan</option>
-                <option value="name">Samuel</option>
-            </select>
-            <label for="exam_type">Tipo de Exame:</label>
-            <select id="exam_type" name="exam_type">
-                <option value="name">Glicemia</option>
-                <option value="name">Triglicerídeos</option>
-                <option value="name">Colesterol</option>
-                <option value="name">Pressão</option>
-            </select>
-            <label for="result">Resultado:</label>
-            <input type="text" id="result" name="result" placeholder="Digite o resultado do exame">
-            <button type="submit">Salvar</button>
-        </form>
+
+    <!-- Cabeçalho -->
+    <header class="text-white py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <a href="index.html">
+                        <img src="img/logo.jpg" alt="Logotipo do LabSaúde" class="mr-3 logo-header">
+                    </a>
+                    <div>
+                        <p class="slogan mb-0">Seus exames de sangue em um só lugar!</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul id="ul-navbar-cabecalho" class="nav">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Cadastro de Resultado de Exame</div>
+                    <div class="card-body">
+                        <form id="resultadoExameForm">
+                            <div id="div-id" class="form-group">
+                                <label for="_id">Identificador do Resultado:</label>
+                                <input type="text" class="form-control readonly-input" id="_id" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="select-usuarios">Usuário:</label>
+                                <select class="form-control" id="select-usuarios" name="select-usuarios" required>
+                                    <option value="">Escolha um usuário</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="select-tipos-exames">Tipo de Exame:</label>
+                                <select class="form-control" id="select-tipos-exames" name="select-tipos-exames" required>
+                                    <option value="">Escolha um tipo de exame</option>
+                                </select>
+                            </div>                            
+
+                            <div class="form-group">
+                                <label for="resultado">Resultado:</label>
+                                <input type="text" class="form-control" id="resultado" name="resultado" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="data-coleta">Data da coleta:</label>
+                                <input type="date" class="form-control" id="data-coleta" name="data-coleta" required>
+                            </div>
+
+                            <!-- Campo para exibir mensagens de erro -->
+                            <div id="erro-msg" class="alert alert-danger mt-3" style="display: none;"></div>
+
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Rodapé -->
+    <footer class="text-white text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 LabSaúde. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="frontend.js"></script>
+
+    <script>
+        montarNavbarCabecalho();
+        editaResultadoExame();
+    </script>
+
 </body>
+
 </html>
