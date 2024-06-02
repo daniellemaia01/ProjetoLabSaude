@@ -37,11 +37,13 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">Tela do Usuário</div>
+                    <div class="card-header" id="div-header-acoes-usuario"></div>
                     <div class="card-body">
                         <p>Escolha uma das ações abaixo:</p>
-                        <a id="link-resultados" href="lista_resultados_exames.html" class="btn btn-primary mb-2">Ver meus exames</a><br>
-                        <a id="link-editar-perfil" href="" class="btn btn-primary mb-2">Editar meu perfil</a>
+                        <div id="div-acoes-usuario">
+                            <a id="link-resultados" href="lista_resultados_exames.html" class="btn btn-primary mb-2">Ver meus exames</a><br>
+                            <a id="link-editar-perfil" href="" class="btn btn-primary mb-2">Editar meu perfil</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,6 +66,7 @@
     <script src="frontend.js"></script>
 
     <script>
+        montarTelaUsuario();
         montarEditarPerfilUsuario();
     </script>
 
