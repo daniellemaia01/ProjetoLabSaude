@@ -65,6 +65,15 @@ const getExamsByUserController = async (req, res) => {
     }
 }
 
+const countExamsByUserIdController = async (req, res) => {
+    try {
+        const exams = await examService.getExamsByUserIdService(req.params.id);
+        res.status(200).json(exams.length);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 const updateExamController = async (req, res) => {
     try {
         const updateData = req.body;
@@ -98,4 +107,4 @@ const deleteExamController = async (req, res) => {
     }
 }
 
-module.exports = {createExamController, getExamsController , getExamByIdController , getExamsByUserController, updateExamController, deleteExamController};
+module.exports = {createExamController, getExamsController , getExamByIdController , getExamsByUserController, updateExamController, deleteExamController, countExamsByUserIdController};

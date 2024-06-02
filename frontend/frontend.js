@@ -1,28 +1,40 @@
 // Base URL do Backend
-const baseURL = 'http://localhost:5000';
+const baseURLBackend = 'http://localhost:5000';
 
-// Instancia do Axios
-let axiosInstance = getInstanciaAxios();
+// URLs das paginas HTML
+const urlEditaResultadoExame = 'edita_resultado_exame.html';
+const urlEditaUsuario = 'edita_usuario.html';
+const urlEditaTipoExame = 'edita_tipo_exame.html';
+const urlIndex = 'index.html';
+const urlListaResultadosExames = 'lista_resultados_exames.html';
+const urlListaTiposExames = 'lista_tipos_exames.html';
+const urlListaUsuarios = 'lista_usuarios.html';
+const urlLogin = 'login.html';
+const urlPainelUsuario = 'painel_usuario.html';
 
-// Caso exista, escondendo elemento com possiveis mensagens de erro
-const erroMsgElement = document.getElementById('erro-msg');
+// Exibir mensagem de erro na tela (com id erro-msg posicionado no html)
+function exibirMensagemErro(mensagemErro){
+    const elementoMensagemErro = document.getElementById('erro-msg');
 
-// Logica para exibir Link login / logout no cabecalho
-logicaLinkLoginLogoutHeader();
+    if (elementoMensagemErro != null) {
+        elementoMensagemErro.textContent = mensagemErro;
+        elementoMensagemErro.style.display = 'block';
+    }    
+}
 
 // Criar instancia do Axios
 function getInstanciaAxios() {
     // Se tem token JWT passa ele no header
     if (getJwtToken()) {
         return axios.create({
-            baseURL: baseURL,
+            baseURL: baseURLBackend,
             headers: {
                 'Authorization': `Bearer ${getJwtToken()}`
             }
         })
     } else {
         return axios.create({
-            baseURL: baseURL
+            baseURL: baseURLBackend
         })
     }
 }
@@ -44,19 +56,15 @@ function editaUsuario() {
 
         // Usuario que nao é admin só pode editar o próprio perfil
         if (idUserEdicao != getUserId() && !getUserAdmin()) {
-            if (erroMsgElement != null) {
-                erroMsgElement.textContent = 'Você só pode editar seu próprio usuário';
-                erroMsgElement.style.display = 'block';
-            }
+            exibirMensagemErro('Você só pode editar seu próprio usuário');
             return;
         }
 
         // Recuperar os dados do usuario e popular no formulario
-        axiosInstance.get('/users/' + idUserEdicao)
+        getInstanciaAxios().get('/users/' + idUserEdicao)
             .then(function (response) {
                 // Na obtencao de usuarios com sucesso
                 let usuarioEdicao = response.data;
-                console.log(usuarioEdicao);
 
                 document.getElementById('_id').value = usuarioEdicao._id;
                 document.getElementById('nome').value = usuarioEdicao.nome;
@@ -66,12 +74,7 @@ function editaUsuario() {
                 document.getElementById('admin').checked = usuarioEdicao.admin;
             })
             .catch(function (error) {
-                // No caso de erro, apresentar na tela
-                console.error('Erro ao recuperar usuário:', error);
-                if (erroMsgElement != null) {
-                    erroMsgElement.textContent = 'Erro ao recuperar usuário: ' + error.response.data.message;
-                    erroMsgElement.style.display = 'block';
-                }
+                exibirMensagemErro('Erro ao recuperar usuário: ' + error.response.data.message);
                 return;
             });
     }
@@ -102,7 +105,7 @@ function editaUsuario() {
 
         if (idUserEdicao == null) {
             // Chamando endpoint do backend para criar usuario
-            axiosInstance.post('/users', {
+            getInstanciaAxios().post('/users', {
                 nome: nome,
                 dataNascimento: dataNascimento,
                 cpf: cpf,
@@ -111,17 +114,17 @@ function editaUsuario() {
                 admin: admin
             })
                 .then(function (response) {
-                    // Na criacao com sucesso, redirecionar para a tela inicial do usuario
-                    console.log(response.data);
-                    window.location.href = 'tela_usuario.html';
+                    // Se admin redireciona para listagem de usuarios
+                    if (getUserAdmin()) {
+                        window.location.href = urlListaUsuarios;
+                    } else {
+                        // Se nao eh admin redireciona para pagina de login
+                        window.location.href = urlLogin;
+                    }
+                    return;
                 })
                 .catch(function (error) {
-                    // No caso de erro, apresentar na tela
-                    console.error('Erro ao cadastrar usuário:', error);
-                    if (erroMsgElement != null) {
-                        erroMsgElement.textContent = 'Erro ao cadastrar usuário: ' + error.response.data.message;
-                        erroMsgElement.style.display = 'block';
-                    }
+                    exibirMensagemErro('Erro ao cadastrar usuário: ' + error.response.data.message);
                     return;
                 });
         } else {
@@ -149,19 +152,20 @@ function editaUsuario() {
                 };
             }
 
-            axiosInstance.put('/users/' + idUserEdicao, usuarioPersistir)
+            getInstanciaAxios().put('/users/' + idUserEdicao, usuarioPersistir)
                 .then(function (response) {
-                    // Na edicao com sucesso, redirecionar para a tela inicial do usuario
-                    console.log(response.data);
-                    window.location.href = 'tela_usuario.html';
+                    // Se admin redireciona para listagem de usuarios
+                    if (getUserAdmin()) {
+                        window.location.href = urlListaUsuarios;
+                    } else {
+                        // Se nao eh admin redireciona para pagina inicial de usuario
+                        window.location.href = urlPainelUsuario;
+                    }
+                    return;
                 })
                 .catch(function (error) {
                     // No caso de erro, apresentar na tela
-                    console.error('Erro ao atualizar usuário:', error);
-                    if (erroMsgElement != null) {
-                        erroMsgElement.textContent = 'Erro ao atualizar usuário: ' + error.response.data.message;
-                        erroMsgElement.style.display = 'block';
-                    }
+                    exibirMensagemErro('Erro ao atualizar usuário: ' + error.response.data.message);
                     return;
                 });
         }
@@ -172,7 +176,11 @@ function editaUsuario() {
 
 // Para fazer login de usuario
 function login() {
-
+    // Se usuario ja esta logado redireciona ele para painel do usuario
+    if (getJwtToken()) {
+        window.location.href = urlPainelUsuario;
+        return;
+    }
 
     // Função para lidar com o envio do formulário de login
     document.getElementById('loginForm').addEventListener('submit', function (event) {
@@ -184,35 +192,22 @@ function login() {
         let senha = document.getElementById('senha').value;
 
         // Chamando endpoint do backend para criar usuario
-        axiosInstance.post('/login', {
+        getInstanciaAxios().post('/login', {
             email: email,
             senha: senha
         })
             .then(function (response) {
-                console.log(response.data);
-
                 // Obtendo o token, id do usuario e se eh admin ou nao e armazenando no local storage
                 localStorage.setItem('jwtToken', response.data.token);
                 localStorage.setItem('userId', response.data.userId);
                 localStorage.setItem('userAdmin', response.data.userAdmin);
 
-                // Atualizando a instancia do AXIOS para agora fazer consultas autenticadas
-                axiosInstance = getInstanciaAxios();
-
-                // Na criacao com sucesso, redirecionar para a tela inicial do usuario
-                if (getUserAdmin()) {
-                    window.location.href = 'tela_admin.html';
-                } else {
-                    window.location.href = 'tela_usuario.html';
-                }
+                // Redirecionar para a tela inicial do usuario
+                window.location.href = urlPainelUsuario;
+                return;
             })
             .catch(function (error) {
-                // No caso de erro, apresentar na tela
-                console.error('Erro ao realizar login:', error);
-                if (erroMsgElement != null) {
-                    erroMsgElement.textContent = 'Erro ao realizar login: ' + error.response.data.message;
-                    erroMsgElement.style.display = 'block';
-                }
+                exibirMensagemErro('Erro ao realizar login: ' + error.response.data.message);
                 return;
             });
     });
@@ -221,11 +216,10 @@ function login() {
 // Para listar todos usuarios
 function listarUsuarios() {
     // Chamando endpoint do backend para listar usuarios
-    axiosInstance.get('/users?limit=1000&offset=0')
+    getInstanciaAxios().get('/users?limit=1000&offset=0')
         .then(function (response) {
             // Na obtencao de usuarios com sucesso
             const usuarios = response.data.users;
-            console.log(usuarios);
 
             // Popule a tabela com os dados dos usuários
             const tabelaUsuarios = document.getElementById('tabela-usuarios');
@@ -234,19 +228,15 @@ function listarUsuarios() {
                 row.innerHTML = `
                 <td>${usuario.email}</td>
                 <td>${usuario.nome}</td>
-                <td>${usuario.admin}</td>
-                <td><a href="edita_usuario.html?id=${usuario._id}" class="btn btn-primary">Editar</a>
-                <a href="javascript:void(0)" onclick="removerUsuario(${usuario._id})"  class="btn btn-primary">Apagar</a></td>
+                <td>${usuario.admin == true ? 'Sim' : 'Não'}</td>
+                <td><a href="${urlEditaUsuario}?id=${usuario._id}" class="btn btn-primary">Editar</a>
+                <a href="javascript:void(0)" onclick="javascript:removerUsuario('${usuario._id}')"  class="btn btn-primary">Apagar</a></td>
             `;
             });
         })
         .catch(function (error) {
             // No caso de erro, apresentar na tela
-            console.error('Erro ao listar usuários:', error);
-            if (erroMsgElement != null) {
-                erroMsgElement.textContent = 'Erro ao listar usuários: ' + error.response.data.message;
-                erroMsgElement.style.display = 'block';
-            }
+            exibirMensagemErro('Erro ao listar usuários: ' + error.response.data.message);
             return;
         });
 }
@@ -254,11 +244,10 @@ function listarUsuarios() {
 // Para listar todos tipos de exames
 function listarTiposExames() {
     // Chamando endpoint do backend para listar tipos de exames
-    axiosInstance.get('/examType?limit=1000&offset=0')
+    getInstanciaAxios().get('/examType?limit=1000&offset=0')
         .then(function (response) {
             // Na obtencao de tipos de exames com sucesso
             const tiposExames = response.data;
-            console.log(tiposExames);
 
             // Popule a tabela com os dados dos usuários
             const tabelaTiposExames = document.getElementById('tabela-tipos-exames');
@@ -268,18 +257,13 @@ function listarTiposExames() {
                 <td>${tipoExame._id}</td>
                 <td>${tipoExame.nomeExame}</td>
                 <td>${tipoExame.valorReferencia}</td>
-                <!--<td><a href="edita_tipo_exame.html?id=${tipoExame._id}" class="btn btn-primary">Editar</a>
+                <!--<td><a href="${urlEditaTipoExame}?id=${tipoExame._id}" class="btn btn-primary">Editar</a>
                 <a href="javascript:void(0)" onclick="removerTipoExame(${tipoExame._id})"  class="btn btn-primary">Apagar</a></td>-->
             `;
             });
         })
         .catch(function (error) {
-            // No caso de erro, apresentar na tela
-            console.error('Erro ao listar tipos de exames:', error);
-            if (erroMsgElement != null) {
-                erroMsgElement.textContent = 'Erro ao listar tipos de exames: ' + error.response.data.message;
-                erroMsgElement.style.display = 'block';
-            }
+            exibirMensagemErro('Erro ao listar tipos de exames: ' + error.response.data.message);
             return;
         });
 }
@@ -300,17 +284,13 @@ function listarResultadosExames() {
     }
 
     // Chamando endpoint do backend para listar resultados de exames
-    axiosInstance.get(urlBackend)
+    getInstanciaAxios().get(urlBackend)
         .then(function (response) {
             // Na obtencao de resultados de exames com sucesso
             const resultadosExames = response.data;
-            console.log(resultadosExames);
 
             if (resultadosExames.length == 0) {
-                if (erroMsgElement != null) {
-                    erroMsgElement.textContent = 'Nenhum resultado de exame localizado para o usuário';
-                    erroMsgElement.style.display = 'block';
-                }
+                exibirMensagemErro('Nenhum resultado de exame localizado para o usuário');
                 return;
             }
 
@@ -329,8 +309,8 @@ function listarResultadosExames() {
                 // Se é admin mostra operacoes de edicao e remocao
                 if (getUserAdmin()) {
                     row.innerHTML += `
-                    <td><a href="edita_resultado_exame.html?id=${resultadoExame._id}" class="btn btn-primary">Editar</a>
-                    <a href="javascript:void(0)" onclick="removerResultadoExame(${resultadoExame._id})"  class="btn btn-primary">Apagar</a></td>`;
+                    <td><a href="${urlEditaResultadoExame}?id=${resultadoExame._id}" class="btn btn-primary">Editar</a>
+                    <a href="javascript:void(0)" onclick="javascript:removerResultadoExame('${resultadoExame._id}')"  class="btn btn-primary">Apagar</a></td>`;
                 } else{
                     row.innerHTML += '<td></td>';
                 }
@@ -339,13 +319,59 @@ function listarResultadosExames() {
         })
         .catch(function (error) {
             // No caso de erro, apresentar na tela
-            console.error('Erro ao listar reultados de exames:', error);
-            if (erroMsgElement != null) {
-                erroMsgElement.textContent = 'Erro ao listar resultados de exames: ' + error.response.data.message;
-                erroMsgElement.style.display = 'block';
-            }
+            exibirMensagemErro('Erro ao listar resultados de exames: ' + error.response.data.message);
             return;
         });
+}
+
+// Remover um resultado de exame
+function removerResultadoExame(id) {
+    getInstanciaAxios().delete('/exam/' + id)
+    .then(function (response) {
+        // Redireciona para listagem de exames
+        window.location.href = urlListaResultadosExames;
+        return;
+    })
+    .catch(function (error) {
+        // No caso de erro, apresentar na tela
+        exibirMensagemErro('Erro ao remover resultado de exame: ' + error.response.data.message);
+        return;
+    });
+}
+
+// Remover usuario
+function removerUsuario(id) {
+    // Antes de remover, verifica se o usuario tem algum resultado de exame
+    getInstanciaAxios().get('/exam/user/'+id)
+        .then(function (response) {
+            // Na obtencao de resultados de exames com sucesso
+            const resultadosExames = response.data;
+
+            if (resultadosExames > 0) {
+                exibirMensagemErro('Usuário possui resultados de exames. Exclua os resultados primeiro. ');
+                return;
+            } else {
+                // Remove usuario da base
+                getInstanciaAxios().delete('/users/' + id)
+                .then(function (response) {
+                    // Redireciona para listagem de usuarios
+                    window.location.href = urlListaUsuarios;
+                    return;
+                })
+                .catch(function (error) {
+                    // No caso de erro, apresentar na tela
+                    exibirMensagemErro('Erro ao remover resultado de exame: ' + error.response.data.message);
+                    return;
+                });
+            }
+        })
+        .catch(function (error) {
+            // No caso de erro, apresentar na tela
+            exibirMensagemErro('Erro ao verificar resultados de exames de usuario: ' + error.response.data.message);
+            return;
+        });
+
+
 }
 
 
@@ -357,7 +383,8 @@ function logout() {
     localStorage.removeItem('userAdmin');
 
     // Redirecionar para a tela inicial
-    window.location.href = 'index.html';
+    window.location.href = urlIndex;
+    return;
 }
 
 // Recupera jwtToken do Local storage
@@ -375,44 +402,39 @@ function getUserAdmin() {
     return JSON.parse(localStorage.getItem('userAdmin'));
 }
 
-// Logica para exibir Link login / logout no cabecalho
-function logicaLinkLoginLogoutHeader() {
-    const loginLogoutHeader = document.getElementById('login-logout');
+function montarNavbarCabecalho(){
+    // Se o usuario esta logado
     if (getJwtToken()) {
-        loginLogoutHeader.href = "javascript:void(0)";
-        loginLogoutHeader.onclick = logout;
-        loginLogoutHeader.innerText = "Logout"
+        document.getElementById('ul-navbar-cabecalho').innerHTML = `
+        <li class="nav-item"><a class="nav-link text-white" href="${urlPainelUsuario}">${getUserAdmin() ? 'Painel Administrador' : 'Painel Usuário'}</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="${urlEditaUsuario  + "?id=" + getUserId()}">Editar Perfil</a></li>        
+        <li class="nav-item"><a class="nav-link text-white" href="javascript:void(0)" onclick = "javascript:logout()">Logout</a></li>
+        `;        
     } else {
-        loginLogoutHeader.href = "login.html";
-        loginLogoutHeader.innerText = "Login"
+        document.getElementById('ul-navbar-cabecalho').innerHTML = `
+        <li class="nav-item"><a class="nav-link text-white" href="${urlEditaUsuario}">Cadastre-se</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="${urlLogin}">Login</a></li>
+         `;        
     }
 }
 
-// Logica da tela de usuario
-function montarEditarPerfilUsuario() {
-    // Ir para página de edicao de perfil usuario
-    document.getElementById('link-editar-perfil').href = 'edita_usuario.html?id=' + getUserId();
-}
-
-// Logica para montar tela de usuario com as opcoes as quais ele tem acesso
+// Logica para montar painel de usuario com as opcoes as quais ele tem acesso
 function montarPainelUsuario(){
     if (getUserAdmin()) {
         document.getElementById('div-header-acoes-usuario').innerText = 'Painel do Administrador';
 
         document.getElementById('div-acoes-usuario').innerHTML = `
-        <a href="lista_usuarios.html" class="btn btn-primary mb-2">Listar usuarios</a><br>
-        <a href="lista_resultados_exames.html" class="btn btn-primary mb-2">Listar resultados de exames</a><br>
-        <a href="lista_tipos_exames.html" class="btn btn-primary mb-2">Listar tipos de exames</a><br>
-        <a href="edita_usuario.html" class="btn btn-primary mb-2" >Cadastrar usuário</a><br>
-        <a href="edita_resultado_exame.html" class="btn btn-primary mb-2" >Cadastrar resultado de exame</a><br>
-        <a id="link-editar-perfil" href="" class="btn btn-primary mb-2">Editar meu perfil</a><br>
+        <a href="${urlListaUsuarios}" class="btn btn-primary mb-2">Listar usuarios</a><br>
+        <a href="${urlListaResultadosExames}" class="btn btn-primary mb-2">Listar resultados de exames</a><br>
+        <a href="${urlListaTiposExames}" class="btn btn-primary mb-2">Listar tipos de exames</a><br>
+        <a href="${urlEditaUsuario}" class="btn btn-primary mb-2" >Cadastrar usuário</a><br>
+        <a href="${urlEditaResultadoExame}" class="btn btn-primary mb-2" >Cadastrar resultado de exame</a><br>
         `;
     } else {
         document.getElementById('div-header-acoes-usuario').innerText = 'Painel do Usuário';
 
         document.getElementById('div-acoes-usuario').innerHTML = `
-        <a id="link-resultados" href="lista_resultados_exames.html" class="btn btn-primary mb-2">Ver meus exames</a><br>
-        <a id="link-editar-perfil" href="" class="btn btn-primary mb-2">Editar meu perfil</a>
+        <a id="link-resultados" href="${urlListaResultadosExames}" class="btn btn-primary mb-2">Ver meus exames</a><br>
         `;
     }
 }

@@ -9,6 +9,7 @@ const router = Router();
 router.post('/', authMiddleware, adminMiddleware, examController.createExamController);
 router.get('/', authMiddleware, adminMiddleware, examController.getExamsController);
 router.get('/user', authMiddleware, examController.getExamsByUserController);
+router.get('/user/:id', authMiddleware, examController.countExamsByUserIdController);
 router.get('/:id', authMiddleware, adminMiddleware, validID, examController.getExamByIdController);
 router.put('/:id', authMiddleware, adminMiddleware, examController.updateExamController);
 router.delete('/:id', authMiddleware, adminMiddleware, validID, examController.deleteExamController);

@@ -21,11 +21,7 @@
                     </div>
                 </div>
                 <nav>
-                    <ul class="nav">
-                        <li class="nav-item"><a class="nav-link text-white" href="#services">Exames</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#about">Sobre Nós</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#contact">Contato</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#main" id="login-logout"></a></li>
+                    <ul id="ul-navbar-cabecalho" class="nav">
                     </ul>
                 </nav>
             </div>
@@ -40,8 +36,10 @@
                     <img src="img/foto1.jpg" alt="Imagem do laboratório" class="img-fluid" >
                 </div>
                 <div class="col-md-6 d-flex flex-column justify-content-center">
-                    <a href="login.html" class="btn btn-primary mb-2">Retire seus Exames</a>
-                    <a href="edita_usuario.html" class="btn btn-secondary ">Cadastre-se</a>
+                    <a href="login.html" class="btn btn-primary mb-2">Retire seus Exames / Login</a>
+                    <a href="#about" class="btn btn-primary mb-2">Sobre nós</a>
+                    <a href="#services" class="btn btn-primary mb-2">Exames Realizados</a>
+                    <a href="#contact" class="btn btn-primary mb-2">Contato</a>
                 </div>
             </div>
         </div>
@@ -133,6 +131,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>    
     <script src="frontend.js"></script>
+
+    <script>
+        montarNavbarCabecalho();
+    </script>
 
 </body>
 </html>
