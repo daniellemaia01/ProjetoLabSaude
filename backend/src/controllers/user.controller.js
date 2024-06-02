@@ -1,5 +1,6 @@
 const userService = require('../services/user.service.js');
 const userRepositories = require('../repositories/user.respositories.js');
+const examService = require('../services/exam.service');
 
 const createUser = async (req, res) => {
     const { nome, email, senha, dataNascimento, cpf, admin} = req.body;
@@ -116,8 +117,17 @@ const updateUserById = async (req, res) => {
 const deleteUser = async (req, res) => {
     const id = req.params.id;
     try {
-        await userService.deleteUserService(id);
-        res.status(200).json({ message: 'Usuário removido com sucesso.' });
+        // Verificando se usuario tem resultados de exames
+        const exams = await examService.getExamsByUserIdService(req.params.id);
+
+        // So remove se nao tiver resultados de exames
+        if (exams.length == 0) {
+            await userService.deleteUserService(id);
+            res.status(200).json({ message: 'Usuário removido com sucesso.' });
+        } else {
+            return res.status(409).json({ message: 'Usuário possui resultados de exames. Exclua os resultados primeiro. ' });
+        }
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

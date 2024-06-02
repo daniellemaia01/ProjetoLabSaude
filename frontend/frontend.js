@@ -341,37 +341,18 @@ function removerResultadoExame(id) {
 
 // Remover usuario
 function removerUsuario(id) {
-    // Antes de remover, verifica se o usuario tem algum resultado de exame
-    getInstanciaAxios().get('/exam/user/'+id)
-        .then(function (response) {
-            // Na obtencao de resultados de exames com sucesso
-            const resultadosExames = response.data;
-
-            if (resultadosExames > 0) {
-                exibirMensagemErro('Usuário possui resultados de exames. Exclua os resultados primeiro. ');
-                return;
-            } else {
-                // Remove usuario da base
-                getInstanciaAxios().delete('/users/' + id)
-                .then(function (response) {
-                    // Redireciona para listagem de usuarios
-                    window.location.href = urlListaUsuarios;
-                    return;
-                })
-                .catch(function (error) {
-                    // No caso de erro, apresentar na tela
-                    exibirMensagemErro('Erro ao remover resultado de exame: ' + error.response.data.message);
-                    return;
-                });
-            }
-        })
-        .catch(function (error) {
-            // No caso de erro, apresentar na tela
-            exibirMensagemErro('Erro ao verificar resultados de exames de usuario: ' + error.response.data.message);
-            return;
-        });
-
-
+    // Remove usuario da base
+    getInstanciaAxios().delete('/users/' + id)
+    .then(function (response) {
+        // Redireciona para listagem de usuarios
+        window.location.href = urlListaUsuarios;
+        return;
+    })
+    .catch(function (error) {
+        // No caso de erro, apresentar na tela
+        exibirMensagemErro('Erro ao remover usuário: ' + error.response.data.message);
+        return;
+    });
 }
 
 
