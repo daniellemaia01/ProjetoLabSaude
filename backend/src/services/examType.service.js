@@ -1,9 +1,9 @@
 const examType = require('../models/examType');
 
 const createExamTypeService = async ({ nomeExame, valorReferencia }) => {
-    const examType = new examType({ nomeExame, valorReferencia });
-    await examType.save();
-    return examType;
+    const exType = new examType({ nomeExame, valorReferencia });
+    await exType.save();
+    return exType;
 };
 
 const getExamTypeService = async () => {
